@@ -1,0 +1,33 @@
+import React from 'react';
+import Link from 'next/link';
+
+const Users = ({ users }) => {
+  return (
+    <div>
+      <h1>Daftar Pengguna</h1>
+      <ul>
+        {users.map((user) => (
+          <li key={user.id}>
+            <Link href={`/users/${user.id}`}>
+              {user.name}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+// Menggunakan SSG untuk fetch data saat build time
+export async function getStaticProps() {
+  const res = await fetch('https://jsonplaceholder.typicode.com/users');
+  const users = await res.json();
+
+  return {
+    props: {
+      users,
+    },
+  };
+}
+
+export default Users;
